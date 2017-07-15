@@ -5,8 +5,8 @@ import Graphics.Gloss.Interface.IO.Game
 
 data GridCoord = GridCoord
   {
-    x :: Int,
-    y :: Int
+    gridX :: Int,
+    gridY :: Int
   }
 
 data Player =  Player
@@ -22,7 +22,7 @@ data GameState = GameState
 
 gameWidth = 800
 gameHeight = 600
-tileSize = 10
+tileSize = 20
 
 initialGameState = GameState
   {
@@ -33,14 +33,32 @@ gridToPos :: Int -> Float
 gridToPos i = fromIntegral i * tileSize
 
 render :: GameState -> IO Picture
-render state = return (Translate px py $ Color white $ circleSolid tileSize)
+render state = return (Translate px py $ Color white $ circleSolid (tileSize / 2))
   where
     pos = position $ player state
-    px = gridToPos $ x $ pos
-    py = gridToPos $ y $ pos
+    px = gridToPos $ gridX $ pos
+    py = gridToPos $ gridY $ pos
+
+movePlayer :: Int -> Int -> GameState -> GameState
+movePlayer x y state = state
+  {
+    player = play
+  }
+  where
+    play' = player state
+    pos' = position $ play'
+    pos = GridCoord (gridX pos' + x) (gridY pos' + y)
+    play = play'
+      {
+        position = pos
+      }
 
 handleEvent :: Event -> GameState -> IO GameState
-handleEvent event state = return state
+handleEvent (EventKey (SpecialKey KeyDown) Down modifiers mousePosition) state = return (movePlayer 0 (-1) state)
+handleEvent (EventKey (SpecialKey KeyUp) Down modifiers mousePosition) state = return (movePlayer 0 1 state)
+handleEvent (EventKey (SpecialKey KeyLeft) Down modifiers mousePosition) state = return (movePlayer (-1) 0 state)
+handleEvent (EventKey (SpecialKey KeyRight) Down modifiers mousePosition) state = return (movePlayer 1 0 state)
+handleEvent _ state = return state
 
 update :: Float -> GameState -> IO GameState
 update dt state = return state
