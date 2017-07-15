@@ -54,10 +54,10 @@ movePlayer x y state = state
       }
 
 handleEvent :: Event -> GameState -> IO GameState
-handleEvent (EventKey (SpecialKey KeyDown) Down modifiers mousePosition) state = return (movePlayer 0 (-1) state)
-handleEvent (EventKey (SpecialKey KeyUp) Down modifiers mousePosition) state = return (movePlayer 0 1 state)
-handleEvent (EventKey (SpecialKey KeyLeft) Down modifiers mousePosition) state = return (movePlayer (-1) 0 state)
-handleEvent (EventKey (SpecialKey KeyRight) Down modifiers mousePosition) state = return (movePlayer 1 0 state)
+handleEvent (EventKey (SpecialKey KeyDown) Down _ _) state = return (movePlayer 0 (-1) state)
+handleEvent (EventKey (SpecialKey KeyUp) Down _ _) state = return (movePlayer 0 1 state)
+handleEvent (EventKey (SpecialKey KeyLeft) Down _ _) state = return (movePlayer (-1) 0 state)
+handleEvent (EventKey (SpecialKey KeyRight) Down _ _) state = return (movePlayer 1 0 state)
 handleEvent _ state = return state
 
 update :: Float -> GameState -> IO GameState
