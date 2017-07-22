@@ -1,23 +1,23 @@
 module Sor where
 
-import Graphics.Gloss.Interface.IO.Game
+import           Graphics.Gloss.Interface.IO.Game
 
 
 data GridCoord = GridCoord
   {
     gridX :: Int,
     gridY :: Int
-  }
+  } deriving Show
 
 data Player =  Player
   {
     position :: GridCoord
-  }
+  } deriving Show
 
 data GameState = GameState
   {
     player :: Player
-  }
+  } deriving Show
 
 
 gameWidth = 800
