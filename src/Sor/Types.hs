@@ -17,6 +17,7 @@ data GameObject = GameObject { posX :: Int
 data Game = Game { objects :: [GameObject]
                  , updateF :: Float -> Game -> IO Game
                  , keyMap :: KeyMap
+                 , counter :: Int
                  }
 
 defaultGameObject :: GameObject
@@ -25,4 +26,6 @@ defaultGameObject = GameObject 0 0 (Color red $ circleSolid 5) False False
 defaultGame :: Game
 defaultGame = Game { objects = []
                    , updateF = (\dt g -> return g)
-                   , keyMap = Map.empty}
+                   , keyMap = Map.empty
+                   , counter = 0
+                   }

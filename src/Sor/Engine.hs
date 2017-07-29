@@ -38,7 +38,7 @@ render game = return (pictures $ map renderGameObject (objects game))
 --
 
 update :: Float -> Game -> IO (Game)
-update dt game@(Game _ updateF _) = updateF dt game
+update dt game@(Game _ updateF _ _) = updateF dt game
 
 
 --

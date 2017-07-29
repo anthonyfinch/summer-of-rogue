@@ -43,7 +43,7 @@ move game go = if canMove (newX, newY)
 
 
 handleMovementKeys :: Game -> Game
-handleMovementKeys game@(Game objects _ keyMap) =
+handleMovementKeys game@(Game objects _ keyMap _) =
 
   if any (\k -> Map.findWithDefault Up k keyMap == Down) [Char 'w', Char 'a', Char 's', Char 'd']
   then
@@ -59,6 +59,13 @@ cleanKeyState game = game { keyMap = Map.empty }
 updateLevel :: Float -> Game -> IO Game
 updateLevel dt game = return (cleanKeyState $ handleMovementKeys game)
 
+updateLoadingLevel :: Float -> Game -> IO Game
+updateLoadingLevel dt game = if counter game <= 0
+                             then
+                               return testLevel
+                             else
+                               return game { counter = counter game - 1 }
+
 
 player = defaultGameObject { visual = Color white $ circle (tileSize / 2)
                            , controlled = True
@@ -73,3 +80,7 @@ testObject = defaultGameObject { posX = 2
 testLevel = defaultGame { objects = [player, testObject]
                         , updateF = updateLevel
                         }
+
+loadingLevel = defaultGame { updateF = updateLoadingLevel
+                           , counter = 60
+                           }
